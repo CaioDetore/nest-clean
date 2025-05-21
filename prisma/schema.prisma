@@ -26,13 +26,13 @@ model User {
 }
 
 model Question {
-  id        String   @id @default(uuid())
+  id        String    @id @default(uuid())
   title     String
-  slug      String   @unique
+  slug      String    @unique
   content   String
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @map("updated_at")
-  authorId  String   @map("author_id")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @map("updated_at")
+  authorId  String    @map("author_id")
 
   author User @relation(fields: [authorId], references: [id])
 
