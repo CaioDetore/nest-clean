@@ -5,7 +5,7 @@ import { ZodValidationPipe } from "src/infra/http/pipes/zod-validation.pipe";
 
 import { z } from 'zod'
 import { CurrentUser } from "src/infra/auth/current-user-decorator";
-import { PrismaService } from "src/infra/prisma/prisma.service";
+import { PrismaService } from "src/infra/database/prisma/prisma.service";
 
 const createQuestionBodySchema = z.object({
   title: z.string(),

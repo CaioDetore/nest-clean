@@ -2,7 +2,7 @@ import { INestApplication } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
 import { AppModule } from '../app.module'
-import { PrismaService } from 'src/infra/prisma/prisma.service'
+import { PrismaService } from 'src/infra/database/prisma/prisma.service'
 import request from 'supertest'
 
 describe('Fetch recent questions (E2E)', () => {
