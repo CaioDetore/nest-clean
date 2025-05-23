@@ -1,55 +1,54 @@
 import { Injectable } from '@nestjs/common'
+import { Student } from '../../enterprise/entities/student'
 import { StudentsRepository } from '../repositories/students-repository'
-import { HashComparer } from '../cryptography/hash-comparer'
-import { Encrypter } from '../cryptography/encrypter'
+import { HashGenerator } from '../cryptography/hash-generator'
+import { StudentAlreadyExistsError } from './errors/student-already-exists-error'
 import { Either, left, right } from 'src/core/either'
-import { WrongCredentialsError } from './errors/wrong-credentials-error'
 
-interface AuthenticateStudentUseCaseRequest {
+interface RegisterStudentUseCaseRequest {
+  name: string
   email: string
   password: string
 }
 
-type AuthenticateStudentUseCaseResponse = Either<
-  WrongCredentialsError,
+type RegisterStudentUseCaseResponse = Either<
+  StudentAlreadyExistsError,
   {
-    accessToken: string
+    student: Student
   }
 >
 
 @Injectable()
-export class AuthenticateStudentUseCase {
+export class RegisterStudentUseCase {
   constructor(
     private studentsRepository: StudentsRepository,
-    private hashComparer: HashComparer,
-    private encrypter: Encrypter,
+    private hashGenerator: HashGenerator,
   ) {}
 
   async execute({
+    name,
     email,
     password,
-  }: AuthenticateStudentUseCaseRequest): Promise<AuthenticateStudentUseCaseResponse> {
-    const student = await this.studentsRepository.findByEmail(email)
+  }: RegisterStudentUseCaseRequest): Promise<RegisterStudentUseCaseResponse> {
+    const studentWithSameEmail =
+      await this.studentsRepository.findByEmail(email)
 
-    if (!student) {
-      return left(new WrongCredentialsError())
+    if (studentWithSameEmail) {
+      return left(new StudentAlreadyExistsError(email))
     }
 
-    const isPasswordValid = await this.hashComparer.compare(
-      password,
-      student.password,
-    )
+    const hashedPassword = await this.hashGenerator.hash(password)
 
-    if (!isPasswordValid) {
-      return left(new WrongCredentialsError())
-    }
-
-    const accessToken = await this.encrypter.encrypt({
-      sub: student.id.toString(),
+    const student = Student.create({
+      name,
+      email,
+      password: hashedPassword,
     })
 
+    await this.studentsRepository.create(student)
+
     return right({
-      accessToken,
+      student,
     })
   }
 }
