@@ -11,6 +11,8 @@ import { RegisterStudentUseCase } from "src/domain/forum/application/use-cases/r
 import { AuthenticateStudentUseCase } from "src/domain/forum/application/use-cases/authenticate-student";
 import { GetQuestionBySlugUseCase } from "src/domain/forum/application/use-cases/get-question-by-slug";
 import { GetQuestionBySlugController } from "./controllers/get-question-by-slug.controller";
+import { EditQuestionController } from "./controllers/edit-question.controller";
+import { EditQuestionUseCase } from "src/domain/forum/application/use-cases/edit-question";
 
 @Module({
   imports: [
@@ -22,14 +24,16 @@ import { GetQuestionBySlugController } from "./controllers/get-question-by-slug.
     AuthenticateController,
     CreateQuestionController,
     FetchRecentQuestionController,
-    GetQuestionBySlugController
+    GetQuestionBySlugController,
+    EditQuestionController
   ],
   providers: [
     CreateQuestionUseCase,
     FetchRecentQuestionsUseCase,
     RegisterStudentUseCase,
     AuthenticateStudentUseCase,
-    GetQuestionBySlugUseCase
+    GetQuestionBySlugUseCase,
+    EditQuestionUseCase
   ],
 })
 
