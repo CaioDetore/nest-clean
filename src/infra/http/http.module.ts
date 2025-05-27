@@ -13,6 +13,8 @@ import { GetQuestionBySlugUseCase } from "src/domain/forum/application/use-cases
 import { GetQuestionBySlugController } from "./controllers/get-question-by-slug.controller";
 import { EditQuestionController } from "./controllers/edit-question.controller";
 import { EditQuestionUseCase } from "src/domain/forum/application/use-cases/edit-question";
+import { DeleteQuestionController } from "./controllers/delete-question.controller";
+import { DeleteQuestionUseCase } from "src/domain/forum/application/use-cases/delete-question";
 
 @Module({
   imports: [
@@ -25,7 +27,8 @@ import { EditQuestionUseCase } from "src/domain/forum/application/use-cases/edit
     CreateQuestionController,
     FetchRecentQuestionController,
     GetQuestionBySlugController,
-    EditQuestionController
+    EditQuestionController,
+    DeleteQuestionController
   ],
   providers: [
     CreateQuestionUseCase,
@@ -33,7 +36,8 @@ import { EditQuestionUseCase } from "src/domain/forum/application/use-cases/edit
     RegisterStudentUseCase,
     AuthenticateStudentUseCase,
     GetQuestionBySlugUseCase,
-    EditQuestionUseCase
+    EditQuestionUseCase,
+    DeleteQuestionUseCase
   ],
 })
 
