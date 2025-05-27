@@ -21,6 +21,8 @@ import { EditAnswerController } from "./controllers/edit-answer.controller";
 import { EditAnswerUseCase } from "src/domain/forum/application/use-cases/edit-answer";
 import { DeleteAnswerController } from "./controllers/delete-answer.controller.e2e-spec";
 import { DeleteAnswerUseCase } from "src/domain/forum/application/use-cases/delete-answer";
+import { ChooseQuestionBestAnswerUseCase } from "src/domain/forum/application/use-cases/chose-question-best-answer";
+import { ChooseQuestionBestAnswerController } from "./controllers/choose-question-best-answer.controller";
 
 @Module({
   imports: [
@@ -37,7 +39,8 @@ import { DeleteAnswerUseCase } from "src/domain/forum/application/use-cases/dele
     DeleteQuestionController,
     AnswerQuestionController,
     EditAnswerController,
-    DeleteAnswerController
+    DeleteAnswerController,
+    ChooseQuestionBestAnswerController
   ],
   providers: [
     CreateQuestionUseCase,
@@ -49,7 +52,8 @@ import { DeleteAnswerUseCase } from "src/domain/forum/application/use-cases/dele
     DeleteQuestionUseCase,
     AnswerQuestionUseCase,
     EditAnswerUseCase,
-    DeleteAnswerUseCase
+    DeleteAnswerUseCase,
+    ChooseQuestionBestAnswerUseCase
   ],
 })
 
