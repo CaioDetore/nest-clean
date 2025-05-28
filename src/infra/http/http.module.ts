@@ -25,6 +25,8 @@ import { ChooseQuestionBestAnswerUseCase } from "src/domain/forum/application/us
 import { ChooseQuestionBestAnswerController } from "./controllers/choose-question-best-answer.controller";
 import { CommentOnQuestionController } from "./controllers/comment-on-question.controller";
 import { CommentOnQuestionUseCase } from "src/domain/forum/application/use-cases/comment-on-question";
+import { DeleteQuestionCommentController } from "./controllers/delete-question-comment.controller";
+import { DeleteQuestionCommentUseCase } from "src/domain/forum/application/use-cases/delete-question-comment";
 
 @Module({
   imports: [
@@ -43,7 +45,8 @@ import { CommentOnQuestionUseCase } from "src/domain/forum/application/use-cases
     EditAnswerController,
     DeleteAnswerController,
     ChooseQuestionBestAnswerController,
-    CommentOnQuestionController
+    CommentOnQuestionController,
+    DeleteQuestionCommentController
   ],
   providers: [
     CreateQuestionUseCase,
@@ -57,7 +60,8 @@ import { CommentOnQuestionUseCase } from "src/domain/forum/application/use-cases
     EditAnswerUseCase,
     DeleteAnswerUseCase,
     ChooseQuestionBestAnswerUseCase,
-    CommentOnQuestionUseCase
+    CommentOnQuestionUseCase,
+    DeleteQuestionCommentUseCase
   ],
 })
 
