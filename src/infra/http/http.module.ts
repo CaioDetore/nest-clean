@@ -27,6 +27,8 @@ import { CommentOnQuestionController } from "./controllers/comment-on-question.c
 import { CommentOnQuestionUseCase } from "src/domain/forum/application/use-cases/comment-on-question";
 import { DeleteQuestionCommentController } from "./controllers/delete-question-comment.controller";
 import { DeleteQuestionCommentUseCase } from "src/domain/forum/application/use-cases/delete-question-comment";
+import { CommentOnAnswerController } from "./controllers/comment-on-answer.controller";
+import { CommentOnAnswerUseCase } from "src/domain/forum/application/use-cases/comment-on-answer";
 
 @Module({
   imports: [
@@ -46,7 +48,8 @@ import { DeleteQuestionCommentUseCase } from "src/domain/forum/application/use-c
     DeleteAnswerController,
     ChooseQuestionBestAnswerController,
     CommentOnQuestionController,
-    DeleteQuestionCommentController
+    DeleteQuestionCommentController,
+    CommentOnAnswerController
   ],
   providers: [
     CreateQuestionUseCase,
@@ -61,7 +64,8 @@ import { DeleteQuestionCommentUseCase } from "src/domain/forum/application/use-c
     DeleteAnswerUseCase,
     ChooseQuestionBestAnswerUseCase,
     CommentOnQuestionUseCase,
-    DeleteQuestionCommentUseCase
+    DeleteQuestionCommentUseCase,
+    CommentOnAnswerUseCase
   ],
 })
 
