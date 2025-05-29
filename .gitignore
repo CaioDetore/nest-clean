@@ -4,6 +4,7 @@
 /build
 /generated/prisma
 /data/pg
+.env.test
 
 # Logs
 logs
