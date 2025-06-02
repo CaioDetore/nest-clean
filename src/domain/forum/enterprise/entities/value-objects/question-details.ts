@@ -10,7 +10,7 @@ export interface QuestionDetailsProps {
   title: string
   content: string
   slug: Slug
-  attachments: Attachment[]
+  attachment: Attachment[]
   bestAnswerId?: UniqueEntityID | null
   createdAt: Date
   updatedAt?: Date | null
@@ -42,7 +42,7 @@ export class QuestionDetails extends ValueObject<QuestionDetailsProps> {
   }
 
   get attachments() {
-    return this.props.attachments
+    return this.props.attachment
   }
 
   get bestAnswerId() {
