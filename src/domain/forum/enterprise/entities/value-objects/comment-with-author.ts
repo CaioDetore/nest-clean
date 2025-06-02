@@ -1,9 +1,10 @@
+import { UniqueEntityID } from 'src/core/entities/unique-entity-id'
 import { ValueObject } from 'src/core/entities/value-object'
 
 export interface CommentWithAuthorProps {
-  commentId: string
+  commentId: UniqueEntityID
   content: string
-  authorId: string
+  authorId: UniqueEntityID
   author: string
   createdAt: Date
   updatedAt?: Date | null

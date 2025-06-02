@@ -4,10 +4,14 @@ import { QuestionCommentsRepository } from "src/domain/forum/application/reposit
 import { QuestionComment } from "src/domain/forum/enterprise/entities/question-comment";
 import { PrismaService } from "../prisma.service";
 import { PrismaQuestionCommentMapper } from "../prisma-question-comment-mapper";
+import { CommentWithAuthor } from "src/domain/forum/enterprise/entities/value-objects/comment-with-author";
+import { PrismaCommentWithAuthorMapper } from "../mappers/prisma-comment-with-author-mapper";
 
 @Injectable()
-export class PrismaQuestionsCommentsRepository implements QuestionCommentsRepository {
-  constructor(private prisma: PrismaService) { }
+export class PrismaQuestionCommentsRepository
+  implements QuestionCommentsRepository
+{
+  constructor(private prisma: PrismaService) {}
 
   async findById(id: string): Promise<QuestionComment | null> {
     const questionComment = await this.prisma.comment.findUnique({
@@ -21,6 +25,45 @@ export class PrismaQuestionsCommentsRepository implements QuestionCommentsReposi
     }
 
     return PrismaQuestionCommentMapper.toDomain(questionComment)
+  }
+
+  async findManyByQuestionId(
+    questionId: string,
+    { page }: PaginationParams,
+  ): Promise<QuestionComment[]> {
+    const questionComments = await this.prisma.comment.findMany({
+      where: {
+        questionId,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: 20,
+      skip: (page - 1) * 20,
+    })
+
+    return questionComments.map(PrismaQuestionCommentMapper.toDomain)
+  }
+
+  async findManyByQuestionIdWithAuthor(
+    questionId: string,
+    { page }: PaginationParams,
+  ): Promise<CommentWithAuthor[]> {
+    const questionComments = await this.prisma.comment.findMany({
+      where: {
+        questionId,
+      },
+      include: {
+        author: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: 20,
+      skip: (page - 1) * 20,
+    })
+
+    return questionComments.map(PrismaCommentWithAuthorMapper.toDomain)
   }
 
   async create(questionComment: QuestionComment): Promise<void> {
@@ -37,20 +80,5 @@ export class PrismaQuestionsCommentsRepository implements QuestionCommentsReposi
         id: questionComment.id.toString(),
       },
     })
-  }
-
-  async findManyByQuestionId(questionId: string, { page }: PaginationParams): Promise<QuestionComment[]> {
-    const questionComments = await this.prisma.comment.findMany({
-      where: {
-        questionId,
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
-      take: 20,
-      skip: (page - 1) * 20,
-    })
-
-    return questionComments.map(PrismaQuestionCommentMapper.toDomain)
   }
 }
