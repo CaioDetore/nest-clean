@@ -5,6 +5,7 @@ import { Answer } from 'src/domain/forum/enterprise/entities/answer'
 import { PrismaService } from '../prisma.service'
 import { PrismaAnswerMapper } from '../prisma-answer-mapper'
 import { AnswerAttachmentsRepository } from 'src/domain/forum/application/repositories/answer-attachments-repository'
+import { DomainEvents } from 'src/core/events/domain-events'
 
 @Injectable()
 export class PrismaAnswersRepository implements AnswerRepository {
@@ -55,6 +56,8 @@ export class PrismaAnswersRepository implements AnswerRepository {
     await this.answerAttachmentsRepository.createMany(
       answer.attachments.getItems(),
     )
+
+    DomainEvents.dispatchEventsForAggregate(answer.id)
   }
 
   async save(answer: Answer): Promise<void> {
@@ -74,6 +77,8 @@ export class PrismaAnswersRepository implements AnswerRepository {
         answer.attachments.getRemovedItems(),
       ),
     ])
+
+    DomainEvents.dispatchEventsForAggregate(answer.id)
   }
 
   async delete(answer: Answer): Promise<void> {
