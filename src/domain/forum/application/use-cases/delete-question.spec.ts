@@ -6,15 +6,26 @@ import { UniqueEntityID } from 'src/core/entities/unique-entity-id'
 import { DeleteQuestionUseCase } from './delete-question'
 import { NotAllowedError } from 'src/core/errors/errors/not-allowed-error'
 import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memory-question-attachments-repository'
+import { InMemoryAttachmentsRepository } from 'test/repositories/in-memory-attachments-repository'
+import { InMemoryStudentsRepository } from 'test/repositories/in-memory-students-repository'
 
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository
+let inMemoryAttachmentsRepository: InMemoryAttachmentsRepository
+let inMemoryStudentsRepository: InMemoryStudentsRepository
 let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentsRepository
 let sut: DeleteQuestionUseCase
 
 describe('Delete Question', () => {
   beforeEach(() => {
     inMemoryQuestionAttachmentsRepository = new InMemoryQuestionAttachmentsRepository()
-    inMemoryQuestionsRepository = new InMemoryQuestionsRepository(inMemoryQuestionAttachmentsRepository)
+    inMemoryAttachmentsRepository = new InMemoryAttachmentsRepository()
+    inMemoryStudentsRepository = new InMemoryStudentsRepository()
+    inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
+      inMemoryQuestionAttachmentsRepository,
+      inMemoryAttachmentsRepository,
+      inMemoryStudentsRepository,
+    )
+
     sut = new DeleteQuestionUseCase(inMemoryQuestionsRepository)
   })
 
@@ -24,7 +35,7 @@ describe('Delete Question', () => {
     }, new UniqueEntityID('question-1'))
 
     await inMemoryQuestionsRepository.create(newQuestion)
-    
+
     await sut.execute({
       authorId: 'author-1',
       questionId: 'question-1',
@@ -40,7 +51,7 @@ describe('Delete Question', () => {
     }, new UniqueEntityID('question-1'))
 
     await inMemoryQuestionsRepository.create(newQuestion)
-    
+
     const result = await sut.execute({
       questionId: 'question-1',
       authorId: 'author-2',
